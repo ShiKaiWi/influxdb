@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"sort"
 	"strconv"
 	"strings"
@@ -59,6 +60,7 @@ type StatementExecutor struct {
 func (e *StatementExecutor) ExecuteStatement(stmt influxql.Statement, ctx *query.ExecutionContext) error {
 	// Select statements are handled separately so that they can be streamed.
 	if stmt, ok := stmt.(*influxql.SelectStatement); ok {
+		log.Printf("#########\nwill execute select statement: %s\n########", stmt)
 		return e.executeSelectStatement(stmt, ctx)
 	}
 
@@ -1015,6 +1017,7 @@ func (e *StatementExecutor) executeShowTagValues(q *influxql.ShowTagValuesStatem
 		return ErrDatabaseNameRequired
 	}
 
+	log.Printf("#########\nexecute show tag values with statement: %s\n###########", q)
 	// Determine shard set based on database and time range.
 	// SHOW TAG VALUES returns all tag values for the default retention policy.
 	di := e.MetaClient.Database(q.Database)

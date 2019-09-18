@@ -1,6 +1,7 @@
 package query
 
 import (
+	"log"
 	"math"
 	"time"
 
@@ -202,6 +203,7 @@ func (cur *scannerCursorBase) Scan(row *Row) bool {
 			row.Values[i] = time.Unix(0, row.Time).In(cur.loc)
 			continue
 		}
+		log.Printf("debug will eval value: %s", expr)
 		v := valuer.Eval(expr)
 		if fv, ok := v.(float64); ok && math.IsNaN(fv) {
 			// If the float value is NaN, convert it to a null float
@@ -209,6 +211,7 @@ func (cur *scannerCursorBase) Scan(row *Row) bool {
 			// a null value that needs to be filled.
 			v = NullFloat
 		}
+		log.Printf("got value, idx=%d, value=%v", i, v)
 		row.Values[i] = v
 	}
 	return true

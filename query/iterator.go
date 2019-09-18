@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"regexp"
 	"time"
 
@@ -458,6 +459,7 @@ func NewIteratorScanner(input Iterator, keys []influxql.VarRef, defaultValue int
 	case UnsignedIterator:
 		return newUnsignedIteratorScanner(input, keys, defaultValue)
 	case StringIterator:
+		log.Printf("#####\nbuild string iterator scanner\n#########")
 		return newStringIteratorScanner(input, keys, defaultValue)
 	case BooleanIterator:
 		return newBooleanIteratorScanner(input, keys, defaultValue)
